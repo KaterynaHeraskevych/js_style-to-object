@@ -6,23 +6,16 @@
  * @return {object}
  */
 function convertToObject(sourceString) {
-  const splitted = sourceString.split(';'); // we made array with line strings
-  const whithoutSpace = splitted.map((line) => {
-    return line.trim();
-  });
-  const filtered = whithoutSpace.filter((item) => {
-    return item.length > 0 && item.includes(':');
-  });
+  return sourceString
+    .split(';')
+    .map((line) => line.trim())
+    .filter((item) => item.length > 0 && item.includes(':'))
+    .map((item) => item.split(':'))
+    .reduce((acc, [key, value]) => {
+      acc[key.trim()] = value.trim();
 
-  const newLine = filtered.map((item) => item.split(':'));
-
-  const result = newLine.reduce((acc, [key, value]) => {
-    acc[key.trim()] = value.trim();
-
-    return acc;
-  }, {});
-
-  return result;
+      return acc;
+    }, {});
 }
 
 module.exports = convertToObject;
